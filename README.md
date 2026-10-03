@@ -25,14 +25,14 @@ The data comes from the [Zindi Gender-Based Violence Tweet Classification Challe
 
 ### Class Distribution After Cleaning
 
-| Label ID | Class | Labeled tweets | Share |
-|---:|---|---:|---:|
-| 0 | `Harmful_Traditional_practice` | 187 | 0.48% |
-| 1 | `Physical_violence` | 5,556 | 14.18% |
-| 2 | `economic_violence` | 215 | 0.55% |
-| 3 | `emotional_violence` | 648 | 1.65% |
-| 4 | `sexual_violence` | 32,587 | 83.14% |
-| **Total** | | **39,193** | **100%** |
+|  Label ID | Class                          | Labeled tweets |    Share |
+| --------: | ------------------------------ | -------------: | -------: |
+|         0 | `Harmful_Traditional_practice` |            187 |    0.48% |
+|         1 | `Physical_violence`            |          5,556 |   14.18% |
+|         2 | `economic_violence`            |            215 |    0.55% |
+|         3 | `emotional_violence`           |            648 |    1.65% |
+|         4 | `sexual_violence`              |         32,587 |   83.14% |
+| **Total** |                                |     **39,193** | **100%** |
 
 The strong imbalance makes accuracy alone insufficient: good performance on sexual violence can conceal poor recognition of rare categories.
 
@@ -51,23 +51,23 @@ The preparation workflow:
 
 The shared cleaning step preserves words, punctuation, and case. Model-specific vectorizers and tokenizers apply their own processing afterward.
 
-| Split | Rows | Prepared columns |
-|---|---:|---|
-| Training | 31,354 | `Tweet_ID`, `tweet`, `label_id` |
-| Validation | 7,839 | `Tweet_ID`, `tweet`, `label_id` |
-| Test | 15,581 | `Tweet_ID`, `tweet` |
+| Split      |   Rows | Prepared columns                |
+| ---------- | -----: | ------------------------------- |
+| Training   | 31,354 | `Tweet_ID`, `tweet`, `label_id` |
+| Validation |  7,839 | `Tweet_ID`, `tweet`, `label_id` |
+| Test       | 15,581 | `Tweet_ID`, `tweet`             |
 
 The cleaned text is stored in the `tweet` column. Learned vocabularies are fitted on the training split only.
 
 ## Models and Experiments
 
-| Approach | Representation and purpose |
-|---|---|
-| **TF-IDF + Linear SVM** | Word unigrams and bigrams with a class-weighted linear classifier and sigmoid probability calibration. |
-| **TF-IDF + Logistic Regression** | A probabilistic lexical baseline using the same TF-IDF settings and balanced class weights. |
-| **SimpleRNN** | Trainable word embeddings followed by a recurrent layer; tested with and without class weighting. |
-| **LSTM** | A gated recurrent model; experiments include a baseline, regularization, GloVe initialization, and bidirectional processing. |
-| **BERTweet** | Fine-tuning `vinai/bertweet-base`, a Transformer pretrained on English tweets. |
+| Approach                         | Representation and purpose                                                                                                   |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **TF-IDF + Linear SVM**          | Word unigrams and bigrams with a class-weighted linear classifier and sigmoid probability calibration.                       |
+| **TF-IDF + Logistic Regression** | A probabilistic lexical baseline using the same TF-IDF settings and balanced class weights.                                  |
+| **SimpleRNN**                    | Trainable word embeddings followed by a recurrent layer; tested with and without class weighting.                            |
+| **LSTM**                         | A gated recurrent model; experiments include a baseline, regularization, GloVe initialization, and bidirectional processing. |
+| **BERTweet**                     | Fine-tuning `vinai/bertweet-base`, a Transformer pretrained on English tweets.                                               |
 
 SimpleRNN and LSTM use **TensorFlow/Keras**. BERTweet uses **PyTorch and Hugging Face Transformers**. The lexical baselines use **scikit-learn**.
 
@@ -79,17 +79,17 @@ BERTweet inputs are limited to 128 tokens. Training token lengths have a median 
 
 The following values come from saved notebook outputs. **These are validation results, not test scores.**
 
-| Model / configuration | Validation accuracy | Validation macro F1 |
-|---|---:|---:|
-| TF-IDF + calibrated Linear SVM | 99.91% | 0.9979 |
-| TF-IDF + Logistic Regression | 96.07% | 0.7216 |
-| SimpleRNN — unweighted | 98.24% | 0.7196 |
-| SimpleRNN — weighted | 98.67% | 0.7501 |
-| LSTM — baseline | 99.55% | 0.9443 |
-| LSTM — regularized | 98.98% | 0.9393 |
-| LSTM — GloVe embeddings | 99.46% | 0.9609 |
-| Bidirectional LSTM | 99.45% | 0.9529 |
-| BERTweet — baseline | 99.99% | 0.9992 |
+| Model / configuration          | Validation accuracy | Validation macro F1 |
+| ------------------------------ | ------------------: | ------------------: |
+| TF-IDF + calibrated Linear SVM |              99.91% |              0.9979 |
+| TF-IDF + Logistic Regression   |              96.07% |              0.7216 |
+| SimpleRNN — unweighted         |              98.24% |              0.7196 |
+| SimpleRNN — weighted           |              98.67% |              0.7501 |
+| LSTM — baseline                |              99.55% |              0.9443 |
+| LSTM — regularized             |              98.98% |              0.9393 |
+| LSTM — GloVe embeddings        |              99.46% |              0.9609 |
+| Bidirectional LSTM             |              99.45% |              0.9529 |
+| BERTweet — baseline            |              99.99% |              0.9992 |
 
 **Macro F1** is the main comparison metric because it gives each class equal importance. The notebook also reports per-class metrics, balanced accuracy, weighted F1, and multiclass ROC-AUC where available, alongside confusion matrices and learning curves.
 
@@ -153,13 +153,13 @@ The notebook is an experimental workflow and currently requires attention to exe
 
 ## Saved Models
 
-| File | Description |
-|---|---|
-| `models/tfidf_svm_pipeline.joblib` | TF-IDF preprocessing and calibrated SVM pipeline. |
-| `models/tfidf_lr_pipeline.joblib` | TF-IDF preprocessing and Logistic Regression pipeline. |
-| `models/Simple RNN_weighted.keras` | Weighted SimpleRNN with its text-vectorization layer. |
-| `models/glove_lstm_model.keras` | GloVe-initialized LSTM with its text-vectorization layer. |
-| `models/tweet_transformer_model.joblib` | BERTweet model tracked through Git LFS. |
+| File                                    | Description                                               |
+| --------------------------------------- | --------------------------------------------------------- |
+| `models/tfidf_svm_pipeline.joblib`      | TF-IDF preprocessing and calibrated SVM pipeline.         |
+| `models/tfidf_lr_pipeline.joblib`       | TF-IDF preprocessing and Logistic Regression pipeline.    |
+| `models/Simple RNN_weighted.keras`      | Weighted SimpleRNN with its text-vectorization layer.     |
+| `models/glove_lstm_model.keras`         | GloVe-initialized LSTM with its text-vectorization layer. |
+| `models/tweet_transformer_model.joblib` | BERTweet model tracked through Git LFS.                   |
 
 Use `joblib.load(...)` for the scikit-learn pipelines and `tf.keras.models.load_model(...)` for the Keras models.
 
@@ -194,3 +194,12 @@ Consult the source challenge's terms before reusing or redistributing the datase
 - [BERTweet pretrained checkpoint](https://huggingface.co/vinai/bertweet-base).
 
 Further related work and methodological discussion are included in the notebook.
+
+## Authors
+
+This project was conducted as a collaborative research study by:
+
+- **Shalom Amaliza**
+- **Yvette Uwimpaye**
+- **Gaddiel Irakoze**
+- **Hamed Alfatih Hamed Algader**
