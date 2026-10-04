@@ -190,4 +190,4 @@ This project was conducted as a collaborative research study by:
 - **Shalom Amaliza**
 - **Yvette Uwimpaye**
 - **Gaddiel Irakoze**
-- **Hamed Alfatih Hamed Algader**
+- **Hamed Alfatih**
